@@ -68,7 +68,7 @@
             border-color: #ffffff;
         }
 
-        /* Capa oscura de fondo para legibilidad, deja traslucir el video */
+        /* Capa oscura de fondo */
         .overlay {
             background: rgba(0, 0, 0, 0.55);
             min-height: 100vh;
@@ -219,6 +219,7 @@
 
     <!-- Video de Fondo de PRIMXS -->
     <video autoplay loop muted playsinline class="bg-video" id="bgVideo">
+        <!-- ACÁ ES DONDE LLAMA A TU VIDEO mivideo.mp4 -->
         <source src="mivideo.mp4" type="video/mp4">
         Tu navegador no soporta videos de fondo.
     </video>
@@ -267,7 +268,6 @@
         const bgVideo = document.getElementById('bgVideo');
 
         function initAudioAndVideo() {
-            // Inicializar sintetizadores web
             if (!audioCtx) {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 audioCtx = new AudioContext();
@@ -277,16 +277,13 @@
             }
             isAudioUnlocked = true;
 
-            // ACTIVAR EL SONIDO DEL VIDEO DE FONDO
             if (bgVideo) {
                 bgVideo.muted = false;
             }
 
-            // Ocultar el aviso de interacción
             document.querySelector('.sound-notice').style.display = 'none'; 
         }
 
-        // Desbloquear audio/video al primer clic en la pantalla
         document.body.addEventListener('click', initAudioAndVideo, { once: true });
 
         // --- LÓGICA DEL CURSOR ---
