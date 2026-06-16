@@ -1,4 +1,4 @@
-html_content_v3 = """<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -9,12 +9,7 @@ html_content_v3 = """<!DOCTYPE html>
         body {
             margin: 0;
             padding: 0;
-            background-color: #050505;
-            background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2000&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            background-blend-mode: multiply;
-            background-attachment: fixed;
+            background-color: #000000;
             color: #ffffff;
             font-family: 'Arial Black', Impact, sans-serif;
             text-transform: uppercase;
@@ -25,6 +20,21 @@ html_content_v3 = """<!DOCTYPE html>
 
         a, button, .video-item img {
             cursor: none !important;
+        }
+
+        /* Video de Fondo */
+        .bg-video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -2;
+            transform: translateX(-50%) translateY(-50%);
+            object-fit: cover;
+            background-size: cover;
         }
 
         /* Estilos del Cursor Personalizado */
@@ -58,13 +68,14 @@ html_content_v3 = """<!DOCTYPE html>
             border-color: #ffffff;
         }
 
-        /* Capa oscura de fondo */
+        /* Capa oscura de fondo para legibilidad, deja traslucir el video */
         .overlay {
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.55);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            z-index: -1;
         }
 
         header {
@@ -76,7 +87,7 @@ html_content_v3 = """<!DOCTYPE html>
             letter-spacing: 8px;
             margin: 0;
             color: #f2f2f2;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+            text-shadow: 2px 2px 15px rgba(0,0,0,0.9);
         }
 
         /* Sección del Contador */
@@ -92,7 +103,7 @@ html_content_v3 = """<!DOCTYPE html>
             letter-spacing: 4px;
             margin-bottom: 30px;
             color: #d10000;
-            text-shadow: 1px 1px 5px rgba(0,0,0,0.8);
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.9);
         }
 
         .timer {
@@ -100,33 +111,37 @@ html_content_v3 = """<!DOCTYPE html>
             justify-content: center;
             gap: 15px;
             font-size: 4rem;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.9);
         }
 
         .timer-box {
             display: flex;
             flex-direction: column;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.6);
             padding: 10px 20px;
             border-radius: 5px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
         }
 
         .timer-box span.label {
             font-size: 1rem;
-            color: #888;
+            color: #bbb;
             letter-spacing: 2px;
             margin-top: 5px;
         }
 
         .separator {
             line-height: 4rem;
-            color: #555;
+            color: #888;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.9);
         }
 
         /* Sección de Videos */
         .videos-section {
             padding: 60px 20px;
-            background: #000000;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(3px);
         }
 
         .video-grid {
@@ -157,13 +172,14 @@ html_content_v3 = """<!DOCTYPE html>
             display: block;
             margin-top: 15px;
             padding: 15px 20px;
-            background: transparent;
+            background: rgba(0,0,0,0.5);
             color: #ffffff;
             border: 2px solid #ffffff;
             text-decoration: none;
             font-size: 1.2rem;
             letter-spacing: 2px;
             transition: all 0.3s ease;
+            backdrop-filter: blur(2px);
         }
 
         .watch-btn:hover {
@@ -175,10 +191,14 @@ html_content_v3 = """<!DOCTYPE html>
         /* Instrucción para activar el sonido */
         .sound-notice {
             font-size: 0.8rem;
-            color: #666;
+            color: #aaa;
             letter-spacing: 1px;
             margin-top: 20px;
             font-family: sans-serif;
+            background: rgba(0,0,0,0.7);
+            padding: 5px 15px;
+            border-radius: 20px;
+            text-shadow: none;
         }
 
         @media (max-width: 768px) {
@@ -193,8 +213,15 @@ html_content_v3 = """<!DOCTYPE html>
 </head>
 <body>
 
+    <!-- Elementos del cursor personalizado -->
     <div class="custom-cursor" id="customCursor"></div>
     <div class="custom-cursor-dot" id="customCursorDot"></div>
+
+    <!-- Video de Fondo de PRIMXS -->
+    <video autoplay loop muted playsinline class="bg-video" id="bgVideo">
+        <source src="mivideo.mp4" type="video/mp4">
+        Tu navegador no soporta videos de fondo.
+    </video>
 
     <div class="overlay">
         <header>
@@ -212,7 +239,7 @@ html_content_v3 = """<!DOCTYPE html>
                 <div class="separator">:</div>
                 <div class="timer-box"><span id="seconds">00</span><span class="label">SEG</span></div>
             </div>
-            <div class="sound-notice">HACÉ CLIC EN CUALQUIER PARTE PARA ACTIVAR EL AUDIO</div>
+            <div class="sound-notice">HACÉ CLIC EN CUALQUIER PARTE PARA ACTIVAR EL AUDIO Y EL VIDEO</div>
         </main>
 
         <section class="videos-section">
@@ -234,11 +261,13 @@ html_content_v3 = """<!DOCTYPE html>
     </div>
 
     <script>
-        // --- CONTEXTO DE AUDIO GLOBAL ---
+        // --- CONTEXTO DE AUDIO GLOBAL Y VIDEO ---
         let audioCtx;
         let isAudioUnlocked = false;
+        const bgVideo = document.getElementById('bgVideo');
 
-        function initAudio() {
+        function initAudioAndVideo() {
+            // Inicializar sintetizadores web
             if (!audioCtx) {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 audioCtx = new AudioContext();
@@ -247,11 +276,18 @@ html_content_v3 = """<!DOCTYPE html>
                 audioCtx.resume();
             }
             isAudioUnlocked = true;
-            document.querySelector('.sound-notice').style.display = 'none'; // Ocultar el aviso
+
+            // ACTIVAR EL SONIDO DEL VIDEO DE FONDO
+            if (bgVideo) {
+                bgVideo.muted = false;
+            }
+
+            // Ocultar el aviso de interacción
+            document.querySelector('.sound-notice').style.display = 'none'; 
         }
 
-        // Desbloquear audio al primer clic o interacción
-        document.body.addEventListener('click', initAudio, { once: true });
+        // Desbloquear audio/video al primer clic en la pantalla
+        document.body.addEventListener('click', initAudioAndVideo, { once: true });
 
         // --- LÓGICA DEL CURSOR ---
         const cursor = document.getElementById('customCursor');
@@ -304,18 +340,13 @@ html_content_v3 = """<!DOCTYPE html>
             try {
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
-                
-                // Tipo de onda sinusoidal (suave y seca) para el bip
                 osc.type = 'sine'; 
-                osc.frequency.setValueAtTime(800, audioCtx.currentTime); // Tono agudo y limpio
-                
-                // Envolvente súper corta (como el golpe de un hi-hat digital)
-                gain.gain.setValueAtTime(0.05, audioCtx.currentTime); // Volumen bajito para que no sature
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05); // Dura solo 50ms
+                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
                 
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
-                
                 osc.start();
                 osc.stop(audioCtx.currentTime + 0.05);
             } catch (e) {}
@@ -342,7 +373,6 @@ html_content_v3 = """<!DOCTYPE html>
             document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
             document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
 
-            // Reproducir el sonido solo si el segundo cambió
             if (seconds !== lastSecond && lastSecond !== -1) {
                 playTickSound();
             }
@@ -355,9 +385,4 @@ html_content_v3 = """<!DOCTYPE html>
         }, 1000);
     </script>
 </body>
-</html>"""
-
-with open("/mnt/data/primxs_website_code_v3.txt", "w", encoding="utf-8") as f:
-    f.write(html_content_v3)
-
-print("V3 generated successfully.")
+</html>
