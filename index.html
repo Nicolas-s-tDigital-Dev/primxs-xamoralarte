@@ -10,7 +10,6 @@
             margin: 0;
             padding: 0;
             background-color: #050505;
-            /* Imagen de fondo: Textura cinematográfica oscura, estilo película analógica */
             background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2000&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
@@ -20,9 +19,49 @@
             font-family: 'Arial Black', Impact, sans-serif;
             text-transform: uppercase;
             text-align: center;
+            overflow-x: hidden;
+            /* Ocultamos el cursor por defecto para usar el personalizado */
+            cursor: none;
         }
 
-        /* Capa oscura encima del fondo para dar ese toque misterioso pero limpio */
+        /* Aseguramos que los enlaces tampoco muestren el cursor nativo */
+        a, button, .video-item img {
+            cursor: none !important;
+        }
+
+        /* Estilos del Cursor Personalizado */
+        .custom-cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #d10000;
+            border-radius: 50%;
+            position: fixed;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        .custom-cursor-dot {
+            width: 4px;
+            height: 4px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            position: fixed;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 10000;
+        }
+
+        /* Efecto del cursor al pasar sobre elementos clickeables */
+        .custom-cursor.hover {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(209, 0, 0, 0.2);
+            border-color: #ffffff;
+        }
+
+        /* Capa oscura de fondo */
         .overlay {
             background: rgba(0, 0, 0, 0.7);
             min-height: 100vh;
@@ -55,7 +94,7 @@
             font-size: 1.8rem;
             letter-spacing: 4px;
             margin-bottom: 30px;
-            color: #d10000; /* Un rojo oscuro, dándole el toque "dark" sin ser explícito */
+            color: #d10000;
             text-shadow: 1px 1px 5px rgba(0,0,0,0.8);
         }
 
@@ -136,8 +175,10 @@
             font-weight: bold;
         }
 
-        /* Responsive para móviles */
+        /* Ocultar cursores en móviles ya que no hay mouse */
         @media (max-width: 768px) {
+            body, a, button, .video-item img { cursor: default !important; }
+            .custom-cursor, .custom-cursor-dot { display: none; }
             h1 { font-size: 3.5rem; }
             .timer { font-size: 2.5rem; gap: 5px; }
             .timer-box { padding: 10px; }
@@ -146,9 +187,14 @@
     </style>
 </head>
 <body>
+
+    <!-- Elementos del cursor personalizado -->
+    <div class="custom-cursor" id="customCursor"></div>
+    <div class="custom-cursor-dot" id="customCursorDot"></div>
+
     <div class="overlay">
         <header>
-            <h1>PRIMXS</h1>
+            <h1 class="nav-sound-trigger">PRIMXS</h1>
         </header>
 
         <main class="countdown-container">
@@ -168,25 +214,87 @@
             <div class="video-grid">
                 <!-- Video 1 -->
                 <div class="video-item">
-                    <a href="https://www.youtube.com/watch?v=4ASYY2629wY" target="_blank">
+                    <a href="https://www.youtube.com/watch?v=4ASYY2629wY" target="_blank" class="nav-sound-trigger">
                         <img src="https://i.ytimg.com/vi/4ASYY2629wY/maxresdefault.jpg" alt="PRIMXS - HORARIO">
                     </a>
-                    <a href="https://www.youtube.com/watch?v=4ASYY2629wY" target="_blank" class="watch-btn">VER AHORA - HORARIO</a>
+                    <a href="https://www.youtube.com/watch?v=4ASYY2629wY" target="_blank" class="watch-btn nav-sound-trigger">VER AHORA - HORARIO</a>
                 </div>
                 <!-- Video 2 -->
                 <div class="video-item">
-                    <a href="https://www.youtube.com/watch?v=A1tJEHw_itU" target="_blank">
+                    <a href="https://www.youtube.com/watch?v=A1tJEHw_itU" target="_blank" class="nav-sound-trigger">
                         <img src="https://i.ytimg.com/vi/A1tJEHw_itU/maxresdefault.jpg" alt="PRIMXS // OILY SESH 06">
                     </a>
-                    <a href="https://www.youtube.com/watch?v=A1tJEHw_itU" target="_blank" class="watch-btn">VER AHORA - OILY SESH</a>
+                    <a href="https://www.youtube.com/watch?v=A1tJEHw_itU" target="_blank" class="watch-btn nav-sound-trigger">VER AHORA - OILY SESH</a>
                 </div>
             </div>
         </section>
     </div>
 
     <script>
-        // Configuramos la fecha del próximo lanzamiento (Ajustable)
-        // Por defecto lo dejé para dentro de 10 días desde hoy.
+        // --- LÓGICA DEL CURSOR PERSONALIZADO ---
+        const cursor = document.getElementById('customCursor');
+        const dot = document.getElementById('customCursorDot');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            dot.style.left = e.clientX + 'px';
+            dot.style.top = e.clientY + 'px';
+        });
+
+        // --- LÓGICA DEL SINTETIZADOR DE AUDIO (Web Audio API) ---
+        // Genera un sonido analógico oscuro de sintetizador sin depender de archivos externos
+        function playDarkSynthSound(frequency, duration) {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                
+                const ctx = new AudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                // Tipo de onda: 'triangle' da un tono gordo, analógico y oscuro
+                osc.type = 'triangle'; 
+                osc.frequency.setValueAtTime(frequency, ctx.currentTime);
+                // Caída de frecuencia para efecto de impacto de sintetizador
+                osc.frequency.exponentialRampToValueAtTime(frequency / 2, ctx.currentTime + duration);
+                
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                osc.start();
+                osc.stop(ctx.currentTime + duration);
+            } catch (error) {
+                console.log("Audio bloqueado por políticas del navegador hasta interacción.");
+            }
+        }
+
+        // Asignar efectos visuales al cursor y sonidos al navegar
+        const soundElements = document.querySelectorAll('.nav-sound-trigger');
+        
+        soundElements.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+                // Sonido de sintetizador bajo al pasar el mouse (hover)
+                playDarkSynthSound(110, 0.12); 
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                cursor.classList.add('hover');
+                cursor.classList.remove('hover');
+            });
+
+            element.addEventListener('click', () => {
+                // Sonido tipo sub-bass drop al hacer clic
+                playDarkSynthSound(80, 0.4);
+            });
+        });
+
+
+        // --- LÓGICA DEL CONTADOR ---
         var countDownDate = new Date();
         countDownDate.setDate(countDownDate.getDate() + 10);
         countDownDate = countDownDate.getTime();
@@ -200,13 +308,11 @@
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // Añadir ceros a la izquierda si es menor a 10
             document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
             document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
             document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
             document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
 
-            // Si el contador llega a cero
             if (distance < 0) {
                 clearInterval(x);
                 document.getElementById("countdown").innerHTML = "<div style='font-size:3rem; color:#fff;'>¡YA DISPONIBLE!</div>";
