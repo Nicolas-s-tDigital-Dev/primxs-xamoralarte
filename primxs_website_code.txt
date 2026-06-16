@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRIMXS - Próximo Lanzamiento</title>
+    <style>
+        /* Estilos generales */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #050505;
+            /* Imagen de fondo: Textura cinematográfica oscura, estilo película analógica */
+            background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: multiply;
+            background-attachment: fixed;
+            color: #ffffff;
+            font-family: 'Arial Black', Impact, sans-serif;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        /* Capa oscura encima del fondo para dar ese toque misterioso pero limpio */
+        .overlay {
+            background: rgba(0, 0, 0, 0.7);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        header {
+            padding: 50px 20px;
+        }
+
+        h1 {
+            font-size: 5rem;
+            letter-spacing: 8px;
+            margin: 0;
+            color: #f2f2f2;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+        }
+
+        /* Sección del Contador */
+        .countdown-container {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .subtitle {
+            font-size: 1.8rem;
+            letter-spacing: 4px;
+            margin-bottom: 30px;
+            color: #d10000; /* Un rojo oscuro, dándole el toque "dark" sin ser explícito */
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.8);
+        }
+
+        .timer {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            font-size: 4rem;
+        }
+
+        .timer-box {
+            display: flex;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .timer-box span.label {
+            font-size: 1rem;
+            color: #888;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+
+        .separator {
+            line-height: 4rem;
+            color: #555;
+        }
+
+        /* Sección de Videos / Cuadrícula */
+        .videos-section {
+            padding: 60px 20px;
+            background: #000000;
+        }
+
+        .video-grid {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .video-item {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .video-item img {
+            width: 100%;
+            border: 2px solid #222;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+            display: block;
+        }
+
+        .video-item:hover img {
+            border-color: #ffffff;
+            transform: scale(1.02);
+        }
+
+        .watch-btn {
+            display: block;
+            margin-top: 15px;
+            padding: 15px 20px;
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .watch-btn:hover {
+            background: #ffffff;
+            color: #000000;
+            font-weight: bold;
+        }
+
+        /* Responsive para móviles */
+        @media (max-width: 768px) {
+            h1 { font-size: 3.5rem; }
+            .timer { font-size: 2.5rem; gap: 5px; }
+            .timer-box { padding: 10px; }
+            .subtitle { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <header>
+            <h1>PRIMXS</h1>
+        </header>
+
+        <main class="countdown-container">
+            <div class="subtitle">PRÓXIMO LANZAMIENTO</div>
+            <div class="timer" id="countdown">
+                <div class="timer-box"><span id="days">00</span><span class="label">DÍAS</span></div>
+                <div class="separator">:</div>
+                <div class="timer-box"><span id="hours">00</span><span class="label">HRS</span></div>
+                <div class="separator">:</div>
+                <div class="timer-box"><span id="minutes">00</span><span class="label">MIN</span></div>
+                <div class="separator">:</div>
+                <div class="timer-box"><span id="seconds">00</span><span class="label">SEG</span></div>
+            </div>
+        </main>
+
+        <section class="videos-section">
+            <div class="video-grid">
+                <!-- Video 1 -->
+                <div class="video-item">
+                    <a href="https://www.youtube.com/watch?v=4ASYY2629wY" target="_blank">
+                        <img src="https://i.ytimg.com/vi/4ASYY2629wY/maxresdefault.jpg" alt="PRIMXS - HORARIO">
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=4ASYY2629wY" target="_blank" class="watch-btn">VER AHORA - HORARIO</a>
+                </div>
+                <!-- Video 2 -->
+                <div class="video-item">
+                    <a href="https://www.youtube.com/watch?v=A1tJEHw_itU" target="_blank">
+                        <img src="https://i.ytimg.com/vi/A1tJEHw_itU/maxresdefault.jpg" alt="PRIMXS // OILY SESH 06">
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=A1tJEHw_itU" target="_blank" class="watch-btn">VER AHORA - OILY SESH</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Configuramos la fecha del próximo lanzamiento (Ajustable)
+        // Por defecto lo dejé para dentro de 10 días desde hoy.
+        var countDownDate = new Date();
+        countDownDate.setDate(countDownDate.getDate() + 10);
+        countDownDate = countDownDate.getTime();
+
+        var x = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
+
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Añadir ceros a la izquierda si es menor a 10
+            document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+
+            // Si el contador llega a cero
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("countdown").innerHTML = "<div style='font-size:3rem; color:#fff;'>¡YA DISPONIBLE!</div>";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
