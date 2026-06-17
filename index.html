@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PRIMXS - Próximo Lanzamiento</title>
+    
+    <!-- Importamos la fuente estilo Gótico Antiguo desde Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+
     <style>
         /* Estilos generales */
         body {
@@ -68,7 +72,7 @@
             border-color: #ffffff;
         }
 
-        /* Capa oscura de fondo */
+        /* Capa oscura de fondo para legibilidad */
         .overlay {
             background: rgba(0, 0, 0, 0.55);
             min-height: 100vh;
@@ -82,9 +86,11 @@
             padding: 50px 20px;
         }
 
+        /* TÍTULO PRINCIPAL (FUENTE GÓTICA) */
         h1 {
-            font-size: 5rem;
-            letter-spacing: 8px;
+            font-family: 'UnifrakturMaguntia', cursive; /* Fuente gótica aplicada acá */
+            font-size: 6.5rem; /* Un poco más grande para compensar el estilo de letra */
+            letter-spacing: 3px;
             margin: 0;
             color: #f2f2f2;
             text-shadow: 2px 2px 15px rgba(0,0,0,0.9);
@@ -204,7 +210,7 @@
         @media (max-width: 768px) {
             body, a, button, .video-item img { cursor: default !important; }
             .custom-cursor, .custom-cursor-dot { display: none; }
-            h1 { font-size: 3.5rem; }
+            h1 { font-size: 4rem; } /* Ajuste de la fuente gótica para celulares */
             .timer { font-size: 2.5rem; gap: 5px; }
             .timer-box { padding: 10px; }
             .subtitle { font-size: 1.2rem; }
@@ -219,7 +225,6 @@
 
     <!-- Video de Fondo de PRIMXS -->
     <video autoplay loop muted playsinline class="bg-video" id="bgVideo">
-        <!-- ACÁ ES DONDE LLAMA A TU VIDEO mivideo.mp4 -->
         <source src="mivideo.mp4" type="video/mp4">
         Tu navegador no soporta videos de fondo.
     </video>
