@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PRIMXS - Próximo Lanzamiento</title>
     
-    <!-- Importamos la fuente estilo Gótico Antiguo desde Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <!-- Importamos la fuente Pirata One (Gótica Urbana) -->
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
 
     <style>
         /* Estilos generales */
@@ -22,7 +22,7 @@
             cursor: none;
         }
 
-        a, button, .video-item img {
+        a, button {
             cursor: none !important;
         }
 
@@ -86,11 +86,11 @@
             padding: 50px 20px;
         }
 
-        /* TÍTULO PRINCIPAL (FUENTE GÓTICA) */
+        /* TÍTULO PRINCIPAL CON PIRATA ONE */
         h1 {
-            font-family: 'UnifrakturMaguntia', cursive; /* Fuente gótica aplicada acá */
-            font-size: 6.5rem; /* Un poco más grande para compensar el estilo de letra */
-            letter-spacing: 3px;
+            font-family: 'Pirata One', system-ui;
+            font-size: 7rem; 
+            letter-spacing: 4px;
             margin: 0;
             color: #f2f2f2;
             text-shadow: 2px 2px 15px rgba(0,0,0,0.9);
@@ -143,55 +143,79 @@
             text-shadow: 2px 2px 8px rgba(0,0,0,0.9);
         }
 
-        /* Sección de Videos */
+        /* --- CARROUSEL DE VIDEOS DESLIZABLES --- */
         .videos-section {
-            padding: 60px 20px;
+            padding: 40px 0 60px 0;
             background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(3px);
+            width: 100%;
+            overflow: hidden; 
         }
 
-        .video-grid {
+        .swipe-instruction {
+            color: #888;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+
+        .carousel-container {
             display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 20px;
+            padding: 0 50vw; /* Permite centrar el primer elemento */
+            scroll-padding: 0 50vw;
+            -ms-overflow-style: none;  
+            scrollbar-width: none;  
         }
 
-        .video-item {
-            width: 100%;
-            max-width: 400px;
+        .carousel-container::-webkit-scrollbar {
+            display: none;
         }
 
-        .video-item img {
-            width: 100%;
-            border: 2px solid #222;
+        /* Ajuste matemático para que el video quede perfectamente centrado */
+        .carousel-container::before,
+        .carousel-container::after {
+            content: '';
+            flex: 0 0 calc(50vw - (min(90vw, 800px) / 2) - 20px);
+        }
+
+        .carousel-item {
+            scroll-snap-align: center;
+            flex: 0 0 auto;
+            width: 90vw;
+            max-width: 800px;
+            aspect-ratio: 16 / 9;
+            background: #111;
+            border: 2px solid #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
             transition: border-color 0.3s ease, transform 0.3s ease;
-            display: block;
         }
 
-        .video-item:hover img {
+        .carousel-item.active {
             border-color: #ffffff;
-            transform: scale(1.02);
         }
 
-        .watch-btn {
-            display: block;
+        .carousel-item iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            pointer-events: auto;
+        }
+
+        .video-title {
             margin-top: 15px;
-            padding: 15px 20px;
-            background: rgba(0,0,0,0.5);
-            color: #ffffff;
-            border: 2px solid #ffffff;
-            text-decoration: none;
             font-size: 1.2rem;
             letter-spacing: 2px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(2px);
-        }
-
-        .watch-btn:hover {
-            background: #ffffff;
-            color: #000000;
-            font-weight: bold;
+            color: #ccc;
         }
 
         /* Instrucción para activar el sonido */
@@ -208,12 +232,13 @@
         }
 
         @media (max-width: 768px) {
-            body, a, button, .video-item img { cursor: default !important; }
+            body, a, button { cursor: default !important; }
             .custom-cursor, .custom-cursor-dot { display: none; }
-            h1 { font-size: 4rem; } /* Ajuste de la fuente gótica para celulares */
+            h1 { font-size: 4.5rem; } 
             .timer { font-size: 2.5rem; gap: 5px; }
             .timer-box { padding: 10px; }
             .subtitle { font-size: 1.2rem; }
+            .carousel-item { max-width: 90vw; }
         }
     </style>
 </head>
@@ -249,19 +274,50 @@
         </main>
 
         <section class="videos-section">
-            <div class="video-grid">
-                <div class="video-item">
-                    <a href="https://www.youtube.com/watch?v=4ASYY2629wY" target="_blank" class="nav-sound-trigger">
-                        <img src="https://i.ytimg.com/vi/4ASYY2629wY/maxresdefault.jpg" alt="PRIMXS - HORARIO">
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=4ASYY2629wY" target="_blank" class="watch-btn nav-sound-trigger">VER AHORA - HORARIO</a>
+            <div class="swipe-instruction">❮ DESLIZÁ PARA VER NUESTROS VIDEOS ❯</div>
+            
+            <div class="carousel-container" id="videoCarousel">
+                
+                <!-- Video 1: MCFLY -->
+                <div class="carousel-item">
+                    <!-- REEMPLAZÁ "ID_DE_MCFLY" POR EL ID REAL DE YOUTUBE -->
+                    <iframe src="https://www.youtube.com/embed/ID_DE_MCFLY" title="MCFLY - PRIMXS" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="video-title">1 - MCFLY</div>
                 </div>
-                <div class="video-item">
-                    <a href="https://www.youtube.com/watch?v=A1tJEHw_itU" target="_blank" class="nav-sound-trigger">
-                        <img src="https://i.ytimg.com/vi/A1tJEHw_itU/maxresdefault.jpg" alt="PRIMXS // OILY SESH 06">
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=A1tJEHw_itU" target="_blank" class="watch-btn nav-sound-trigger">VER AHORA - OILY SESH</a>
+
+                <!-- Video 2: Estadio | 21 -->
+                <div class="carousel-item">
+                    <!-- REEMPLAZÁ "ID_DE_ESTADIO" POR EL ID REAL DE YOUTUBE -->
+                    <iframe src="https://www.youtube.com/embed/ID_DE_ESTADIO" title="Estadio | 21 - PRIMXS" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="video-title">2 - ESTADIO | 21</div>
                 </div>
+
+                <!-- Video 3: PARANÁ -->
+                <div class="carousel-item">
+                    <!-- REEMPLAZÁ "ID_DE_PARANA" POR EL ID REAL DE YOUTUBE -->
+                    <iframe src="https://www.youtube.com/embed/ID_DE_PARANA" title="PARANÁ - PRIMXS" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="video-title">3 - PARANÁ</div>
+                </div>
+
+                <!-- Video 4: QUE MIRÁS -->
+                <div class="carousel-item">
+                    <!-- REEMPLAZÁ "ID_DE_QUEMIRAS" POR EL ID REAL DE YOUTUBE -->
+                    <iframe src="https://www.youtube.com/embed/ID_DE_QUEMIRAS" title="QUE MIRÁS - PRIMXS" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="video-title">4 - QUE MIRÁS</div>
+                </div>
+
+                <!-- Video 5: HORARIO -->
+                <div class="carousel-item">
+                    <iframe src="https://www.youtube.com/embed/4ASYY2629wY" title="PRIMXS - HORARIO" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="video-title">5 - HORARIO</div>
+                </div>
+
+                <!-- Video 6: OILY SESH 06 -->
+                <div class="carousel-item">
+                    <iframe src="https://www.youtube.com/embed/A1tJEHw_itU" title="PRIMXS // OILY SESH 06" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="video-title">6 - OILY SESH 06</div>
+                </div>
+
             </div>
         </section>
     </div>
@@ -385,6 +441,26 @@
                 document.getElementById("countdown").innerHTML = "<div style='font-size:3rem; color:#fff;'>¡YA DISPONIBLE!</div>";
             }
         }, 1000);
+
+        // --- EFECTO VISUAL EN EL CARRUSEL ---
+        const carousel = document.getElementById('videoCarousel');
+        const items = document.querySelectorAll('.carousel-item');
+        
+        carousel.addEventListener('scroll', () => {
+            let center = carousel.offsetWidth / 2 + carousel.scrollLeft;
+            items.forEach(item => {
+                let itemCenter = item.offsetLeft + item.offsetWidth / 2;
+                // Si el item está en el centro de la pantalla, le damos un borde blanco
+                if (Math.abs(center - itemCenter) < item.offsetWidth / 2) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        });
+        
+        // Disparar evento inicial para que el primer video se ilumine
+        carousel.dispatchEvent(new Event('scroll'));
     </script>
 </body>
 </html>
